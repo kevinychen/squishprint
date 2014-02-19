@@ -24,15 +24,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $landscape = 'false';
         $vert_delta = '-' . strval($delta / 2) . 'in';
         $horiz_delta = '-' . strval($delta / 2) . 'in';
+    } else {
+        array_push($errors, 'Invalid number of pages per sheet parameter');
     }
-    $latex = sprintf($format, $nup, $landscape, $vert_delta, $horiz_delta);
-    file_put_contents($code . '.tex', $latex);
 
-    rename($_FILES['file']['tmp_name'], 'uploaded.pdf');
-    shell_exec('pdflatex ' . $code . '.tex');
-    shell_exec('rm uploaded.pdf ' . $code . '.tex ' . $code . '.aux ' . $code . '.log');
+    switch (0) {
+        case 0:
+            if (count($errors) > 0) {
+                break;
+            }
 
-    header('Location: ' . $code . '.pdf');
+            $latex = sprintf($format, $nup, $landscape, $vert_delta, $horiz_delta);
+            if (file_put_contents($code . '.tex', $latex) === FALSE) {
+                array_push($errors, 'Error: insufficient file permissions');
+                break;
+            }
+
+            if (rename($_FILES['file']['tmp_name'], 'uploaded.pdf') === FALSE) {
+                array_push($errors, 'Error: is this PDF too large?');
+                break;
+            }
+
+            if (shell_exec('pdflatex ' . $code . '.tex') === NULL) {
+                array_push($errors, 'Squishprint error: is this a valid PDF?');
+                break;
+            }
+
+            shell_exec('rm uploaded.pdf ' . $code . '.tex ' . $code . '.aux ' . $code . '.log');
+
+            if (!file_exists($code . '.pdf')) {
+                array_push($errors, 'Squishprint error: is this a valid PDF?');
+                break;
+            }
+
+            header('Location: ' . $code . '.pdf');
+    }
 }
 ?>
 <html>
@@ -40,6 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </head>
     <body>
     <h1>Squish Print</h1>
+<?php
+    foreach ($errors as &$error) {
+?>
+    <p><?php echo $error ?></p>
+<?php
+    }
+?>
     <form method="post" action="upload.php" enctype="multipart/form-data">
         <p>Upload a PDF: <input type="file" name="file"></p>
         <input type="radio" name="nup" value="2on1" checked>2 pages per sheet<br/>
