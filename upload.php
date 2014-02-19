@@ -50,8 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 break;
             }
 
-            shell_exec('rm uploaded.pdf ' . $code . '.tex ' . $code . '.aux ' . $code . '.log');
-
             if (!file_exists($code . '.pdf')) {
                 array_push($errors, 'Squishprint error: is this a valid PDF?');
                 break;
@@ -59,6 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             header('Location: ' . $code . '.pdf');
     }
+
+    shell_exec('rm uploaded.pdf ' . $code . '.tex ' . $code . '.aux ' . $code . '.log');
 }
 ?>
 <html>
