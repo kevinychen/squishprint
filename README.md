@@ -10,5 +10,5 @@ What we would rather have is this:
 
 ![goodpage](https://f.cloud.github.com/assets/1329067/2212569/654732d4-99b4-11e3-9299-ea639637eabe.png)
 
-Fortunately, achieving the latter result is easy. Simply visit [bit.ly/squishprint](bit.ly/squishprint) (where this repo is hosted) and upload any PDF.
+Fortunately, achieving the latter result is easy. Simply visit [bit.ly/squishprint](http://bit.ly/squishprint) (where this repo is hosted) and upload any PDF.
 The service will return a PDF with two pages per sheet, which can be directly printed.
