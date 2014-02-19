@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 \includepdf[nup = %s, landscape=%s, delta=%s %s, pages={1-}]{uploaded.pdf}
 \end{document}
 ';
-    if (!preg_match('/[01](\.[02468]?)/', $_POST['delta'])) {
+    if (!preg_match('/[01](\.[02468])?/', $_POST['delta'])) {
         array_push($errors, 'Invalid vertical squish amount parameter');
     } else {
         $delta = floatval($_POST['delta']);
