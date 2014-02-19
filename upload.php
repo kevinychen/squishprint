@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     shell_exec('pdflatex ' . $code . '.tex');
     shell_exec('rm uploaded.pdf ' . $code . '.tex ' . $code . '.aux ' . $code . '.log');
 
-    header('Location: /squishprint/' . $code . '.pdf');
+    header('Location: ' . $code . '.pdf');
 }
 ?>
 <html>
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </head>
     <body>
     <h1>Squish Print</h1>
-    <form method="post" action="/squishprint/upload.php" enctype="multipart/form-data">
+    <form method="post" action="upload.php" enctype="multipart/form-data">
         <p>Upload a PDF: <input type="file" name="file"></p>
         <input type="radio" name="nup" value="2on1" checked>2 pages per sheet<br/>
         <input type="radio" name="nup" value="4on1">4 pages per sheet<br/>
